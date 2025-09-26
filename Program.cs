@@ -1,41 +1,46 @@
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+var users = new List<User>();
+var nextId = 1;
 
-app.UseHttpsRedirection();
+// GET all users
+app.MapGet("/users", () => Results.Ok(users));
 
-var summaries = new[]
+// GET user by ID
+app.MapGet("/users/{id:int}", (int id) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var user = users.FirstOrDefault(u => u.Id == id);
+    return user is null ? Results.NotFound() : Results.Ok(user);
+});
 
-app.MapGet("/weatherforecast", () =>
+// POST create user
+app.MapPost("/users", (User user) =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    user.Id = nextId++;
+    users.Add(user);
+    return Results.Created($"/users/{user.Id}", user);
+});
+
+// PUT update user
+app.MapPut("/users/{id:int}", (int id, User updatedUser) =>
+{
+    var user = users.FirstOrDefault(u => u.Id == id);
+    if (user is null) return Results.NotFound();
+
+    user.Username = updatedUser.Username;
+    user.Email = updatedUser.Email;
+    return Results.Ok(user);
+});
+
+// DELETE user
+app.MapDelete("/users/{id:int}", (int id) =>
+{
+    var user = users.FirstOrDefault(u => u.Id == id);
+    if (user is null) return Results.NotFound();
+
+    users.Remove(user);
+    return Results.NoContent();
+});
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
