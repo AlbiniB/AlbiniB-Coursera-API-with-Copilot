@@ -1,5 +1,12 @@
+using UserManagementApi.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
+
+app.UseMiddleware<LoggingMiddleware>(); // Basic request/response status
+app.UseMiddleware<RequestResponseLoggingMiddleware>(); // Full body logging
+app.UseMiddleware<TokenAuthenticationMiddleware>(); // Auth check
+app.UseMiddleware<ErrorHandlingMiddleware>(); // Catch exceptions
 
 var users = new List<User>();
 var nextId = 1;
