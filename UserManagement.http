@@ -1,17 +1,20 @@
 ### Get all users
 GET http://localhost:5046/users
+Authorization: Bearer your-secret-token
 Accept: application/json
 
 ###
 
 ### Get user by ID
 GET http://localhost:5046/users/1
+Authorization: Bearer your-secret-token
 Accept: application/json
 
 ###
 
 ### Create a new user
 POST http://localhost:5046/users
+Authorization: Bearer your-secret-token
 Content-Type: application/json
 
 {
@@ -23,6 +26,7 @@ Content-Type: application/json
 
 ### Update an existing user
 PUT http://localhost:5046/users/1
+Authorization: Bearer your-secret-token
 Content-Type: application/json
 
 {
@@ -34,4 +38,5 @@ Content-Type: application/json
 
 ### Delete a user
 DELETE http://localhost:5046/users/1
+Authorization: Bearer your-secret-token
 Accept: application/json
