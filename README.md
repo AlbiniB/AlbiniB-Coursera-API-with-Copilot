@@ -26,7 +26,19 @@ All `/users` endpoints are protected by token authentication.
 ---
 
 ## 📂 Folder Structure
-UserManagementApi/ ├── Models/ │   └── User.cs ├── Middleware/ │   ├── LoggingMiddleware.cs │   ├── RequestResponseLoggingMiddleware.cs │   ├── TokenAuthenticationMiddleware.cs │   └── ErrorHandlingMiddleware.cs ├── UserManagement.http └── Program.cs
+```plaintext
+UserManagementApi/
+├── Models/
+│   └── User.cs
+├── Middleware/
+│   ├── LoggingMiddleware.cs
+│   ├── RequestResponseLoggingMiddleware.cs
+│   ├── TokenAuthenticationMiddleware.cs
+│   └── ErrorHandlingMiddleware.cs
+├── UserManagement.http
+└── Program.cs
+```
+
 
 ---
 
